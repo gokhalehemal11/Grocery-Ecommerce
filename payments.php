@@ -23,7 +23,7 @@ if($uname != 'malbok@gmail.com'){
         $uname= $_SESSION['user'];
         $db = new Database();
         $con = $db->connect();
-        $query = $con->query("SELECT vendor_name, SUM(product_price*product_qty) AS total FROM orders GROUP BY vendor_name;");
+        $query = $con->query("SELECT vendor_name, SUM(product_price*product_qty) AS total FROM orders  WHERE delivery_status !='Returned' GROUP BY vendor_name;");
         ?>
     </div>
 

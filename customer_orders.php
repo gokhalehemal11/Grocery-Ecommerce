@@ -21,7 +21,7 @@ ini_set('display_errors', 1);
         $db = new Database();
         $con = $db->connect();
         if($uname != 'malbok@gmail.com'){
-        $query = $con->query("SELECT product_qty, product_price FROM orders WHERE vendor_name='$uname'");
+        $query = $con->query("SELECT product_qty, product_price FROM orders WHERE vendor_name='$uname' AND  delivery_status !='Returned'");
         $total= 0;
         if (@$query->num_rows > 0) {
         while ($row = $query->fetch_assoc()) {
@@ -30,7 +30,7 @@ ini_set('display_errors', 1);
       }
     }
     else{
-      $query = $con->query("SELECT product_qty, product_price, shipping_method FROM orders ");
+      $query = $con->query("SELECT product_qty, product_price, shipping_method FROM orders WHERE delivery_status !='Returned'");
         $total= 0;
         if (@$query->num_rows > 0) {
         while ($row = $query->fetch_assoc()) {
@@ -96,6 +96,8 @@ if(!$mail->send()) {
               <th>Payment Status</th>
               <th>Order Date</th>
               <th>Vendor Name</th>
+              <th>Buyer Name</th>
+              <th>Buyer Phone</th>
               <th>Shipping Method</th>
               <th>Delivery Status</th>
             </tr>
@@ -149,7 +151,7 @@ if(isset($_POST['deliver'])){
               <div class="form-group">
                 <label>Select Order ID</label>
                 <select class="form-control brand_list" name="order_id">
-                  <?php $q2= "select distinct(payment_id) from orders where vendor_name='$uname'";
+                  <?php $q2= "select distinct(payment_id) from orders where vendor_name='$uname' and delivery_status = 'ND'";
                   $data2= mysqli_query($con, $q2);
                   while($res2= mysqli_fetch_assoc($data2)){
                 ?>
@@ -187,8 +189,8 @@ if(isset($_POST['deli']))
   $order_id= $_POST['order_id'];
   $name= $_POST['del_guy'];
 
-  $q2= $con->query("UPDATE orders SET delivery_status='$name' WHERE payment_id='$order_id'");
-  echo "<script type='text/javascript'>alert('What');</script>";
+  $q2= $con->query("UPDATE orders SET delivery_status='$name' WHERE payment_id='$order_id' AND vendor_name='$uname'");
+  echo "<script type='text/javascript'>alert('Delivery Updated');</script>";
 }
 
 ?>

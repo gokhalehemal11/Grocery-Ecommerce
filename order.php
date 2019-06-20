@@ -1,6 +1,6 @@
 <?php 
 session_start();
-
+/*ini_set('display_errors', 1);*/
 include("connection.php");
 error_reporting(0);
 
@@ -135,7 +135,6 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 				</div>			
 </div>
   <!---->
-
     <!-- Carousel
     ================================================== -->
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -189,8 +188,17 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 								$total2= mysqli_num_rows($data2);
 
 								while($res2= mysqli_fetch_assoc($data2)){
+									$ven= $res2['vendor_name'];
+									$q4= "SELECT * FROM vendors WHERE email= '$ven'";
+									$data4= mysqli_query($conn, $q4);
+									while($res4= mysqli_fetch_assoc($data4)){
+										$ven_ph= $res4['phone'];
+										$ven_name= $res4['username'];
+										$ven_address= $res4['street'].", ".$res4['city'].", ".$res4['pincode'];
+									}
+
 									$del= $res2['delivery_status'];
-									if($del != 'ND'){
+									if($del != 'ND' && $del != 'Returned'){
 									$q3= "SELECT * FROM delivery WHERE username= '$del'";
 									$data3= mysqli_query($conn, $q3);
 									while($res3= mysqli_fetch_assoc($data3)){
@@ -200,7 +208,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 						?>
 							<div class="col-md-3 pro-1">
 								<div class="col-m">								
-									<a href="#" data-toggle="modal" data-target="#myModal1" class="offer-img" id="<?php echo $res2['product_id']; ?>">
+									<a href="#" data-toggle="modal" data-target="#myModal1" class="offer-img" id="<?php echo $res2['order_id']; ?>">
 										<?php echo "<img src='".$res2['product_image']."'>";?> 
 									</a>
 									<div class="mid-1">
@@ -215,21 +223,66 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 										</div>
 										<div class="mid-3">
 											<p ><em class="item_qty"> Qty <?php echo $res2['product_qty'];?></em></p>
-											<div class="women"><b>Delivery Name:</b> <?php echo $del; ?></div>
-											<div class="women"><b>Delivery Phone:</b> <?php echo $sdel2; ?></div>
+											<div class="del_name"><b>Delivery Name:</b> <?php echo $del; ?></div>
+											<div class="del_ph"><b>Delivery Phone:</b> <?php echo $sdel2; ?></div>
 											<div class="clearfix"></div>
 										</div>
+										<div class="mid-2">
+											<p ><em class="pay_id"> <b>Order ID: </b> <?php echo $res2['payment_id'];?></em></p>
+											<p ><em class="pay_stat"> <b>Payment Status: </b> <?php echo $res2['payment_status'];?></em></p>
+											<p ><em class="ven_name"> <b>Vendor Name: </b> <?php echo $ven_name;?></em></p>
+											<p ><em class="ven_ph"> <b>Vendor Phone No: </b> <?php echo $ven_ph;?></em></p>
+											<p ><em class="ven_address"> <b>Vendor Address: </b> <?php echo $ven_address;?></em></p>
+											<div class="clearfix"></div>
+										</div>
+										<button class="btn btn-danger" id="<?php echo $res2['order_id']; ?>">Return Order</button>
 									</div>
 								</div>
 							</div>
 							<?php 
 							}
 								}
+								elseif ($del == 'Returned') { ?>
+									<div class="col-md-3 pro-1">
+								<div class="col-m">								
+									<a href="#" data-toggle="modal" data-target="#myModal1" class="offer-img" id="<?php echo $res2['order_id']; ?>">
+										<?php echo "<img src='".$res2['product_image']."'>";?> 
+									</a>
+									<div class="mid-1">
+										<div class="women">
+											<h6>
+												<?php echo $res2['product_title'];?>
+											</h6>							
+										</div>
+										<div class="mid-2">
+											<p ><em class="item_price"> Price <?php echo $res2['product_price'];?></em></p>
+											<div class="clearfix"></div>
+										</div>
+										<div class="mid-3">
+											<p ><em class="item_qty"> Qty <?php echo $res2['product_qty'];?></em></p>
+											<div class="del_name"><b>Delivery Name:</b> Order Returned </div>
+											<div class="del_ph"><b>Delivery Phone:</b> Order Returned </div>
+											<div class="clearfix"></div>
+										</div>
+										<div class="mid-2">
+											<p ><em class="pay_id"> <b>Order ID: </b> <?php echo $res2['payment_id'];?></em></p>
+											<p ><em class="pay_stat"> <b>Payment Status: </b>Order Returned </em></p>
+											<p ><em class="ven_name"> <b>Vendor Name: </b> <?php echo $ven_name;?></em></p>
+											<p ><em class="ven_ph"> <b>Vendor Phone No: </b> <?php echo $ven_ph;?></em></p>
+											<p ><em class="ven_address"> <b>Vendor Address: </b> <?php echo $ven_address;?></em></p>
+											<div class="clearfix"></div>
+										</div>
+										<button class="btn btn-secondary" id="">Order Returned</button>
+									</div>
+								</div>
+							</div>
+
+								<?php }
 								else{
 									?>
 									<div class="col-md-3 pro-1">
 								<div class="col-m">								
-									<a href="#" data-toggle="modal" data-target="#myModal1" class="offer-img" id="<?php echo $res2['product_id']; ?>">
+									<a href="#" data-toggle="modal" data-target="#myModal1" class="offer-img" id="<?php echo $res2['order_id']; ?>">
 										<?php echo "<img src='".$res2['product_image']."'>";?> 
 									</a>
 									<div class="mid-1">
@@ -248,10 +301,18 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 											<div class="women"><b>Delivery Status:</b> Yet to Deliver</div>
 											<div class="clearfix"></div>
 										</div>
+										<div class="mid-2">
+											<p ><em class="pay_id"> <b>Order ID: </b> <?php echo $res2['payment_id'];?></em></p>
+											<p ><em class="pay_stat"> <b>Payment Status: </b> <?php echo $res2['payment_status'];?></em></p>
+											<p ><em class="ven_name"> <b>Vendor Name: </b> <?php echo $ven_name;?></em></p>
+											<p ><em class="ven_ph"> <b>Vendor Phone No: </b> <?php echo $ven_ph;?></em></p>
+											<p ><em class="ven_address"> <b>Vendor Address: </b> <?php echo $ven_address;?></em></p>
+											<div class="clearfix"></div>
+										</div>
+										<button class="btn btn-danger" id="<?php echo $res2['order_id']; ?>">Cancel Order</button>
 									</div>
 								</div>
 							</div>
-
 
 									<?php
 								}
@@ -261,6 +322,33 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 			</div>
 		</div>
 	</div>
+
+<!-- <div class="text-center text-danger mb-5" style="padding-bottom: 20px;">
+			<a href="#" data-toggle="modal" data-target="#return_order" class="btn btn-danger btn-md">Return Order</a>
+	</div> -->
+
+<!-- Modal -->
+
+<script>  
+	 $(document).ready(function(){  
+	      $('.btn-danger').click(function(){ 
+	      	if(confirm("Are you sure?")){
+	           var id = $(this).attr("id");
+	           //console.log(id);   
+	           $.ajax({  
+	                url:"return-order.php",  
+	                method:"post",  
+	                data:{id:id},  
+	                success:function(data){ 
+	                    alert("Order Cancelled");
+	                    window.location.reload();
+	                	}  
+			        });
+		        }  
+		    });  
+	    });  
+</script>
+
 
 
 <!--footer-->
