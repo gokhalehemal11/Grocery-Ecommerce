@@ -239,8 +239,10 @@ CREATE TABLE `vendors` (
   `pincode` varchar(30) DEFAULT NULL,
   `password` varchar(50) DEFAULT NULL,
   `phone` varchar(50) DEFAULT NULL,
+  `ifsc` text,
+  `pan_card` text,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,7 +251,7 @@ CREATE TABLE `vendors` (
 
 LOCK TABLES `vendors` WRITE;
 /*!40000 ALTER TABLE `vendors` DISABLE KEYS */;
-INSERT INTO `vendors` VALUES (5,'hemal','hemal@gmail.com','hdfc colony','pune','411019','hemal123','9518786014'),(7,'Username','admin@gmail.com','Shivajinagar','Pune','411001','admin123','8149992015'),(8,'malbok','malbok@gmail.com','STR 2','Meghalaya','411772','malbok123','1223451334'),(9,'Chinmayee','gokhalehemal11@gmail.com','Chinchwad','Pune','411019','c123','1234567890');
+INSERT INTO `vendors` VALUES (5,'hemal','hemal@gmail.com','hdfc colony','pune','411019','hemal123','9518786014',NULL,NULL),(7,'Username','admin@gmail.com','Shivajinagar','Pune','411001','admin123','8149992015',NULL,NULL),(8,'malbok','malbok@gmail.com','STR 2','Meghalaya','411772','malbok123','1223451334',NULL,NULL),(9,'Chinmayee','gokhalehemal11@gmail.com','Chinchwad','Pune','411019','c123','1234567890',NULL,NULL);
 /*!40000 ALTER TABLE `vendors` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -262,4 +264,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-06-20 19:11:17
+-- Dump completed on 2019-06-26 23:03:56
