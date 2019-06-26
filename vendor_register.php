@@ -180,6 +180,16 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 							<div class="clearfix"></div>
 						</div>
 						<div class="key">
+							<i class="fa fa-user" aria-hidden="true"></i>
+							<input  type="text" value="Bank IFSC No." name="IFSC" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Required During Payment';}" required="true">
+							<div class="clearfix"></div>
+						</div>
+						<div class="key">
+							<i class="fa fa-user" aria-hidden="true"></i>
+							<input  type="text" value="PAN Card No." name="pan_card" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Required During Payment';}" required="true">
+							<div class="clearfix"></div>
+						</div>
+						<div class="key">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 							<input  type="password" value="Password" name="Password" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Password';}" required="true">
 							<div class="clearfix"></div>
@@ -203,13 +213,15 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 							$pincode= $_GET['Pincode'];
 							$passwd= $_GET['Password'];
 							$cpasswd= $_GET['ConfirmPassword'];
+							$ifsc= $_GET['IFSC'];
+							$pan= $_GET['pan_card'];
 						
 
 						if($uname != "" && $email != "" && $phone != "" && $city != "" && $pincode != "" && $passwd != ""){
 
 							if($passwd == $cpasswd){
 
-								$query= "INSERT INTO vendors values (DEFAULT,'$uname','$email','$street','$city','$pincode','$passwd','$phone')";
+								$query= "INSERT INTO vendors values (DEFAULT,'$uname','$email','$street','$city','$pincode','$passwd','$phone','$ifsc','$pan')";
 								$data= mysqli_query($conn, $query);
 
 								if($data == false){
@@ -217,6 +229,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 								}
 								else{
 									$_SESSION['user']= $email;
+									echo "<script type='text/javascript'>  alert('Vendor Registered Successfully'); </script>";
 									echo "<script type='text/javascript'>  window.location='vendor-index.php'; </script>";
 								}
 
