@@ -164,7 +164,7 @@ function hideURLbar(){ window.scrollTo(0,1); } </script>
 
 				</div>
 				<div class="forg">
-					<a href="#" class="forg-left">Forgot Password</a>
+					<a href="forget.php" class="forg-left">Forgot Password</a>
 					<a href="register.php" class="forg-right">Register</a>
 				<div class="clearfix"></div>
 				</div>
